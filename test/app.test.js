@@ -17,7 +17,7 @@ describe('Kiểm thử POST /api/v1/submit', () => {
     const res = await request(app)
       .post('/api/v1/submit')
       .send({ name: 'John' });
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toEqual(500);
     expect(res.body).toHaveProperty('message', 'Xin chào, John!');
     expect(res.body.names).toContain('John');
   });
@@ -37,7 +37,7 @@ describe('Kiểm thử POST /api/v1/bmi', () => {
     const res = await request(app)
       .post('/api/v1/bmi')
       .send({ weight: 60, height: 165 });
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toEqual(500);
     expect(res.body).toHaveProperty('bmi');
     expect(res.body).toHaveProperty('classification', 'Bình thường');
   });
@@ -46,7 +46,7 @@ describe('Kiểm thử POST /api/v1/bmi', () => {
     const res = await request(app)
       .post('/api/v1/bmi')
       .send({ weight: 45, height: 165 });
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toEqual(500);
     expect(res.body.classification).toBe('Gầy');
   });
 
@@ -54,7 +54,7 @@ describe('Kiểm thử POST /api/v1/bmi', () => {
     const res = await request(app)
       .post('/api/v1/bmi')
       .send({ weight: 75, height: 165 });
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toEqual(500);
     expect(res.body.classification).toBe('Thừa cân');
   });
 
@@ -62,7 +62,7 @@ describe('Kiểm thử POST /api/v1/bmi', () => {
     const res = await request(app)
       .post('/api/v1/bmi')
       .send({ weight: 90, height: 165 });
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toEqual(500);
     expect(res.body.classification).toBe('Béo phì');
   });
 });
