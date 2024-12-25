@@ -1,4 +1,4 @@
-// Import các hàm calculateBMI và classifyBMI từ bmi.js
+// Import các hàm calculateBMI và classifyBMI từ bmi.js 
 const { calculateBMI, classifyBMI } = require('../models/bmi');
 
 // Hàm getBMI xử lý yêu cầu từ client
@@ -21,10 +21,4 @@ const getBMI = (req, res) => {
 };
 
 // Xuất hàm getBMI
-HEAD
-
-// Lưu ý: Tham khảo mã trong tệp nameController.js
-// src/controllers/bmiController.js
-const { calculateBMI, classifyBMI } = require('../models/bmi');
-
 module.exports = { getBMI };
