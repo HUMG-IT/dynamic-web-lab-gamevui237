@@ -16,7 +16,7 @@
   "dependencies": {
     "chromedriver": "^130.0.2",
     "express": "^4.21.1",
-    "selenium-webdriver": "^4.26.0"
+    "selenium-webdriver": "^4.27.0"
   },
   "devDependencies": {
     "cypress": "^13.15.2",
