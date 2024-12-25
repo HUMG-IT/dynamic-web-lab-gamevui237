@@ -1,48 +1,100 @@
-// Form lưu tên
-document.getElementById('nameForm').addEventListener('submit', async function (e) {
-    // Ngăn hành vi mặc định của form (ngăn tải lại trang)
-    e.preventDefault();
+// Đảm bảo các script chỉ chạy sau khi DOM đã tải xong
+document.addEventListener('DOMContentLoaded', () => {
+    // Form lưu tên
+    const nameForm = document.getElementById('nameForm');
+    if (nameForm) {
+        nameForm.addEventListener('submit', async function (e) {
+            // Ngăn hành vi mặc định của form (ngăn tải lại trang)
+            e.preventDefault();
 
-    // Lấy giá trị nhập từ trường input có id là 'name'
-    const name = document.getElementById('name').value;
+            // Lấy giá trị nhập từ trường input có id là 'name'
+            const nameInput = document.getElementById('name');
+            if (!nameInput) {
+                console.error("Phần tử input 'name' không tồn tại!");
+                return;
+            }
+            const name = nameInput.value;
 
-    // Gửi yêu cầu POST đến server tại route '/submit' với dữ liệu JSON
-    const response = await fetch('/api/v1/submit', {
-        method: 'POST',  // Sử dụng phương thức POST để gửi dữ liệu
-        headers: {
-            'Content-Type': 'application/json',  // Định nghĩa kiểu nội dung gửi là JSON
-        },
-        body: JSON.stringify({ name: name }),  // Chuyển đổi đối tượng { name: name } thành chuỗi JSON
-    });
+            try {
+                // Gửi yêu cầu POST đến server tại route '/submit' với dữ liệu JSON
+                const response = await fetch('/api/v1/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name }),
+                });
 
-    // Chờ phản hồi từ server và chuyển đổi phản hồi từ JSON thành đối tượng JavaScript
-    const data = await response.json();
+                // Kiểm tra phản hồi và xử lý lỗi nếu có
+                if (!response.ok) {
+                    throw new Error('Lỗi từ server khi gửi dữ liệu lưu tên.');
+                }
 
-    // Hiển thị thông điệp trả về từ server trong phần tử có id là 'nameResponse'
-    document.getElementById('nameResponse').textContent = `${data.message}. Danh sách tên: ${data.names.join(', ')}`;
-});
+                const data = await response.json();
 
-// Form tính BMI
-document.getElementById('bmiForm').addEventListener('submit', async function (e) {
-    // Ngăn hành vi mặc định của form (ngăn tải lại trang)
-    e.preventDefault();
+                // Hiển thị thông điệp trả về từ server
+                const nameResponse = document.getElementById('nameResponse');
+                if (nameResponse) {
+                    nameResponse.textContent = `${data.message}. Danh sách tên: ${data.names.join(', ')}`;
+                } else {
+                    console.error("Phần tử 'nameResponse' không tồn tại!");
+                }
+            } catch (error) {
+                console.error('Lỗi khi gửi dữ liệu lưu tên:', error.message);
+            }
+        });
+    } else {
+        console.error("Form 'nameForm' không tồn tại!");
+    }
 
-    // Lấy giá trị chiều cao, cân nặng nhập từ form
-    const height = parseFloat(document.getElementById('height').value);
-    const weight = parseFloat(document.getElementById('weight').value);
+    // Form tính BMI
+    const bmiForm = document.getElementById('bmiForm');
+    if (bmiForm) {
+        bmiForm.addEventListener('submit', async function (e) {
+            // Ngăn hành vi mặc định của form (ngăn tải lại trang)
+            e.preventDefault();
 
-    // Gửi yêu cầu POST đến server tại route '/bmi' với dữ liệu JSON
-    const response = await fetch('/api/v1/bmi', {
-        method: 'POST',  // Sử dụng phương thức POST để gửi dữ liệu
-        headers: {
-            'Content-Type': 'application/json',  // Định nghĩa kiểu nội dung gửi là JSON
-        },
-        body: JSON.stringify({ height, weight }),  // Chuyển đổi đối tượng thành chuỗi JSON
-    });
+            // Lấy giá trị chiều cao và cân nặng
+            const heightInput = document.getElementById('height');
+            const weightInput = document.getElementById('weight');
 
-    // Chờ phản hồi từ server và chuyển đổi phản hồi từ JSON thành đối tượng JavaScript
-    const data = await response.json();
+            if (!heightInput || !weightInput) {
+                console.error("Phần tử 'height' hoặc 'weight' không tồn tại!");
+                return;
+            }
 
-    // Hiển thị thông điệp trả về từ server trong phần tử có id là 'bmiResult'
-    document.getElementById('bmiResult').textContent = `BMI của bạn là: ${data.bmi}, Phân loại: ${data.classification}`;
+            const height = parseFloat(heightInput.value);
+            const weight = parseFloat(weightInput.value);
+
+            try {
+                // Gửi yêu cầu POST đến server tại route '/bmi' với dữ liệu JSON
+                const response = await fetch('/api/v1/bmi', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ height, weight }),
+                });
+
+                // Kiểm tra phản hồi và xử lý lỗi nếu có
+                if (!response.ok) {
+                    throw new Error('Lỗi từ server khi gửi dữ liệu BMI.');
+                }
+
+                const data = await response.json();
+
+                // Hiển thị thông điệp trả về từ server
+                const bmiResult = document.getElementById('bmiResult');
+                if (bmiResult) {
+                    bmiResult.textContent = `BMI của bạn là: ${data.bmi}, Phân loại: ${data.classification}`;
+                } else {
+                    console.error("Phần tử 'bmiResult' không tồn tại!");
+                }
+            } catch (error) {
+                console.error('Lỗi khi gửi dữ liệu BMI:', error.message);
+            }
+        });
+    } else {
+        console.error("Form 'bmiForm' không tồn tại!");
+    }
 });
